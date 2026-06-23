@@ -338,8 +338,115 @@
             margin: 10px 0 20px;
         }
 
+        .search-form {
+            margin-bottom: 20px;
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 10px;
+        }
+
+        .post-card-image,
+        .post-featured-image,
+        .current-featured-image {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .current-featured-image {
+            max-width: 240px;
+            display: block;
+        }
+
+        .tag-list {
+            margin-bottom: 12px;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #3730a3;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .pagination-wrap {
+            margin-top: 24px;
+        }
+
+        .pagination-wrap nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-wrap a,
+        .pagination-wrap span {
+            padding: 6px 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .comment-pending {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .pending-badge {
+            color: #b45309;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .admin-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-section h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
+            .search-row {
+                grid-template-columns: 1fr;
+            }
+
             .navbar-inner {
                 flex-direction: column;
                 align-items: flex-start;
@@ -367,7 +474,12 @@
                 <a href="{{ route('posts.index') }}">Home</a>
 
                 @auth
-                    <a href="{{ route('posts.create') }}">New Post</a>
+                    @if(auth()->user()->canManagePosts())
+                        <a href="{{ route('posts.create') }}">New Post</a>
+                    @endif
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.categories.index') }}">Admin</a>
+                    @endif
                     <span class="navbar-user">Hello, {{ auth()->user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST" class="inline-form" style="display:inline;">
                         @csrf
